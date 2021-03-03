@@ -37,13 +37,11 @@ derivative_Planert = abs(diff(p) ./ diff(beta_Planert));
 
 for pair = MSN_pairs
     Taverna_beta_pdf.(pair{1}) = Taverna.posterior.(pair{1}).pdf(2:999) .* derivative_Taverna;
-    [~, arg] = max(Taverna_beta_pdf.(pair{1}));
-    Taverna_MAP.(pair{1}) = beta_Taverna(arg);
+    Taverna_MAP.(pair{1}) = beta_Taverna(Taverna_beta_pdf.(pair{1}) == max(Taverna_beta_pdf.(pair{1})));
     Taverna_convertedMAP.(pair{1}) = ConvertPtoBeta (Taverna.posterior.(pair{1}).MAP, R_Taverna);
     Taverna_convertedCI.(pair{1}) =  ConvertPtoBeta (Taverna.posterior.(pair{1}).CI, R_Taverna);
     Planert_beta_pdf.(pair{1}) = Planert.posterior.(pair{1}).pdf(2:999) .* derivative_Planert;
-    [~, arg] = max(Planert_beta_pdf.(pair{1}));
-    Planert_MAP.(pair{1}) = beta_Planert(arg);
+    Planert_MAP.(pair{1}) = beta_Planert(Planert_beta_pdf.(pair{1}) == max(Planert_beta_pdf.(pair{1})));
     Planert_convertedMAP.(pair{1}) = ConvertPtoBeta (Planert.posterior.(pair{1}).MAP, R_Planert);
     Planert_convertedCI.(pair{1}) =  ConvertPtoBeta (Planert.posterior.(pair{1}).CI, R_Planert);
 end
