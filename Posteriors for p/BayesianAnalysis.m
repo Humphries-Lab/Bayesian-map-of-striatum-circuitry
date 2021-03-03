@@ -19,7 +19,7 @@ data = load([source ' data']);
 %% introduction
 
 prior = 'literature';
-alpha = 5 / 100; % confidence level for the credibility interval eg 5% for a 95% credibility interval
+alpha = 0.05; % confidence level for the credibility interval eg 5% for a 95% credibility interval
 p = 0 : 0.001 : 1; % values of p at which I want the posterior function evaluated
 
 %% define prior parameters

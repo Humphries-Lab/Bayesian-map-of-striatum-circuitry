@@ -6,15 +6,15 @@ close all
 
 %% choose dataset and pairs of interest
 
-source = 'Taverna';
+source = 'Planert';
 prior = 'literature';
 data = load([source ' posterior with ' prior ' prior.mat']);
 %data = load([source '/' source ' posterior with ' prior ' prior.mat']);
 
 %either detect all the pairs in the data or manually choose those you want
 
-%list_of_pairs = fieldnames(data.posterior);
-list_of_pairs = {'d1_dx', 'd2_dx'};
+list_of_pairs = fieldnames(data.posterior);
+%list_of_pairs = {'d1_dx', 'd2_dx'};
 
 %% figure specs
 
