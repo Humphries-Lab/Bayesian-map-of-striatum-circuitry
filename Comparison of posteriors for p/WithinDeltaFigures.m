@@ -11,7 +11,7 @@ for stage = 1 : n_stages
         p(test,:) = Delta_pdf(data.posterior.(pairings{test,1}).pdf(stage, :), data.posterior.(pairings{test,2}).pdf(stage, :), step);
         label(test) = {[pairings{test,1} ' vs ' pairings{test,2}]};
         figure()
-        plot(-1:0.001:1 , p(test,:), 'color', cm(2,:), 'Linewidth', 2)
+        plot(-1:step:1 , p(test,:), 'color', cm(2,:), 'Linewidth', 2)
         %title([data.folder_name ' '  label{test}])
         xlim([-0.5 0.5])
         xticks(-0.5 : 0.1 : 0.5)
