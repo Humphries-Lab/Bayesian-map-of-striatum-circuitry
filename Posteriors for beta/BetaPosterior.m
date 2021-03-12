@@ -70,27 +70,29 @@ for pair = MSN_pairs
     figure()
     hold on
     Curve_Taverna = plot(beta, Taverna_beta_pdf.(pair{1}), 'Linewidth', 2);
-    CI_Taverna_curve = line(Taverna_beta_CI.(pair{1}), [-3 -3], 'LineWidth',2, 'HandleVisibility', 'off');
+    CI_Taverna_curve = line(Taverna_beta_CI.(pair{1}), [-1 -1], 'LineWidth',2, 'HandleVisibility', 'off');
     Curve_Planert = plot(beta, Planert_beta_pdf.(pair{1}), 'Linewidth', 2);
-    CI_Planert_curve = line(Planert_beta_CI.(pair{1}), [-6 -6], 'LineWidth',2, 'HandleVisibility', 'off');
+    CI_Planert_curve = line(Planert_beta_CI.(pair{1}), [-3 -3], 'LineWidth',2, 'HandleVisibility', 'off');
     legend('Taverna', 'Planert')
     axis square
     
     if strcmp(pair{1}(2), '1') % ie if the presynaptic neuron is a D1 neuron
         xlim([0 0.2])
+        ylim([-5 45])
         Curve_Taverna.Color = cm(1,:);
         CI_Taverna_Curve.Color = cm(1,:);
         Curve_Planert.Color = cm(2,:);
         CI_Planert_Curve.Color = cm(2,:);
     else % ie if the presynaptic neuron is a D2 neuron instead
-        xlim([0 0.2])
+        xlim([0 0.1])
+        ylim([-6 90])
         Curve_Taverna.Color = cm(3,:);
         CI_Taverna_Curve.Color = cm(3,:);
         Curve_Planert.Color = cm(4,:);
         CI_Planert_Curve.Color = cm(4,:);
     end
     
-    %saveas(gcf, ['../figures/beta posterior/' pair{1}], 'svg')
+    saveas(gcf, ['beta posterior ' pair{1}], 'svg')
     
     x = 0 : 1 : 120;
     y1 = exp(-Taverna_MAP.(pair{1}) * x);
