@@ -31,8 +31,8 @@ max_beta = 0.2;
 beta_step = 0.0001;
 beta = min_beta : beta_step : max_beta;
 
-p_Taverna = Convert_beta_to_p(beta, R_Taverna);
-p_Planert = Convert_beta_to_p(beta, R_Planert);
+p_Taverna = Convert_beta_to_p(beta, R_Taverna, 'Nearest-Neighbour');
+p_Planert = Convert_beta_to_p(beta, R_Planert, 'Equiprobable');
 
 derivative_Taverna = abs(diff(p_Taverna) ./ diff(beta));
 derivative_Planert = abs(diff(p_Planert) ./ diff(beta));
