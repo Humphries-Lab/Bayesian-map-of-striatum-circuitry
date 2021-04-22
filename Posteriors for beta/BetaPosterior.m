@@ -27,12 +27,12 @@ alpha = 0.05;
 %% either calculate the reparameterisation or load from previous save as this calculation is relatively long
 
 min_beta = 0.001;
-max_beta = 0.2;
+max_beta = 0.5;
 beta_step = 0.0001;
 beta = min_beta : beta_step : max_beta;
 
 p_Taverna = Convert_beta_to_p(beta, R_Taverna, 'Nearest-Neighbour');
-p_Planert = Convert_beta_to_p(beta, R_Planert, 'Equiprobable');
+p_Planert = Convert_beta_to_p(beta, R_Planert, 'Nearest-Neighbour');
 
 derivative_Taverna = abs(diff(p_Taverna) ./ diff(beta));
 derivative_Planert = abs(diff(p_Planert) ./ diff(beta));
@@ -70,22 +70,22 @@ for pair = MSN_pairs
     figure()
     hold on
     Curve_Taverna = plot(beta, Taverna_beta_pdf.(pair{1}), 'Linewidth', 2);
-    CI_Taverna_curve = line(Taverna_beta_CI.(pair{1}), [-1 -1], 'LineWidth',2, 'HandleVisibility', 'off');
+    CI_Taverna_curve = line(Taverna_beta_CI.(pair{1}), [-0.5 -0.5], 'LineWidth',2, 'HandleVisibility', 'off');
     Curve_Planert = plot(beta, Planert_beta_pdf.(pair{1}), 'Linewidth', 2);
-    CI_Planert_curve = line(Planert_beta_CI.(pair{1}), [-3 -3], 'LineWidth',2, 'HandleVisibility', 'off');
+    CI_Planert_curve = line(Planert_beta_CI.(pair{1}), [-1 -1], 'LineWidth',2, 'HandleVisibility', 'off');
     legend('Taverna', 'Planert')
     axis square
     
     if strcmp(pair{1}(2), '1') % ie if the presynaptic neuron is a D1 neuron
-        xlim([0 0.2])
-        ylim([-5 45])
+        xlim([0 0.3])
+        ylim([-3 50])
         Curve_Taverna.Color = cm(1,:);
         CI_Taverna_Curve.Color = cm(1,:);
         Curve_Planert.Color = cm(2,:);
         CI_Planert_Curve.Color = cm(2,:);
     else % ie if the presynaptic neuron is a D2 neuron instead
-        xlim([0 0.1])
-        ylim([-6 90])
+        xlim([0 0.15])
+        ylim([-5 90])
         Curve_Taverna.Color = cm(3,:);
         CI_Taverna_Curve.Color = cm(3,:);
         Curve_Planert.Color = cm(4,:);

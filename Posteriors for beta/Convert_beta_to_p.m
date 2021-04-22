@@ -8,8 +8,8 @@ p = zeros(1,length(beta));
 if strcmp(method, 'Equiprobable')
     fun = @(r, b) 2 / R^2 .* r .* exp(-b .* r);
 elseif strcmp(method, 'Nearest-Neighbour')
-    h = 10;
-    N = 14.15 * 10^4 * 10^-9;  % according to Oorschoot 1996, 14.15 * 10^4 neurons per mm^3
+    h = 0.1;
+    N = 80500 * 10^-9;  % going with Hjorth 2020 (and Rosen 2001) with 80500/mm^3
     k = 2 * pi * h * N / (1 - exp(-pi * R^2 * h * N));
     fun = @(r,b) k .* r .* exp(-r.*(pi * h * N .* r + b));
 end
