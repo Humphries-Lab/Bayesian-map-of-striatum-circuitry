@@ -13,6 +13,7 @@ close gcf
 %% select datasets and prior and load corresponding posterior distribution
 
 prior = 'literature';
+sampling_method = 'Equiprobable'; % or 'Nearest-Neighbour'
 
 Taverna = load(['../Posteriors for p/Taverna posterior with ' prior ' prior']);
 Planert = load(['../Posteriors for p/Planert posterior with ' prior ' prior']);
@@ -31,31 +32,23 @@ max_beta = 0.5;
 beta_step = 0.0001;
 beta = min_beta : beta_step : max_beta;
 
-p_Taverna = Convert_beta_to_p(beta, R_Taverna, 'Nearest-Neighbour');
-p_Planert = Convert_beta_to_p(beta, R_Planert, 'Nearest-Neighbour');
+p_Taverna = Convert_beta_to_p(beta, R_Taverna, sampling_method);
+p_Planert = Convert_beta_to_p(beta, R_Planert, sampling_method);
 
-derivative_Taverna = abs(diff(p_Taverna) ./ diff(beta));
-derivative_Planert = abs(diff(p_Planert) ./ diff(beta));
-
-
-
-% beta_Taverna = ConvertPtoBeta (p, R_Taverna);
-% beta_Planert = ConvertPtoBeta (p, R_Planert);
-% derivative_Taverna = abs(diff(p) ./ diff(beta_Taverna));
-% derivative_Planert = abs(diff(p) ./ diff(beta_Planert));
-
+if strcmp(sampling_method, 'Equiprobable') % use the closed form of the derivative
+    dp_Taverna = -1 * derivative_p_of_beta(R_Taverna, beta);
+    dp_Planert = -1 * derivative_p_of_beta(R_Planert, beta);
+else % numerical method 
+    dp_Taverna = -1 * diff(p_Taverna) ./ diff(beta);
+    dp_Planert = -1 * diff(p_Planert) ./ diff(beta);
+end
 % load('betas')
 
 %% calculate the new posterior for y (the beta parameter) according to the formula g(y) = f(x(y)). dx/dy with x the binomial parameter
 
 for pair = MSN_pairs
-%     Taverna_beta_pdf.(pair{1}) = Taverna.posterior.(pair{1}).pdf(2:999) .* derivative_Taverna;
-%     [~, arg] = max(Taverna_beta_pdf.(pair{1}));
-%     Taverna_MAP.(pair{1}) = beta_Taverna(arg);
-%     Taverna_convertedMAP.(pair{1}) = ConvertPtoBeta (Taverna.posterior.(pair{1}).MAP, R_Taverna);
-%     Taverna_convertedCI.(pair{1}) =  ConvertPtoBeta (Taverna.posterior.(pair{1}).CI, R_Taverna);
-    [Taverna_beta_pdf.(pair{1}), Taverna_MAP.(pair{1}), Taverna_beta_CI.(pair{1})] = TransformPosterior(Taverna.posterior.(pair{1}).a, Taverna.posterior.(pair{1}).b, p_Taverna, beta, derivative_Taverna, alpha);
-    [Planert_beta_pdf.(pair{1}), Planert_MAP.(pair{1}), Planert_beta_CI.(pair{1})] = TransformPosterior(Planert.posterior.(pair{1}).a, Planert.posterior.(pair{1}).b, p_Planert, beta, derivative_Planert, alpha);
+    [Taverna_beta_pdf.(pair{1}), Taverna_MAP.(pair{1}), Taverna_beta_CI.(pair{1})] = TransformPosterior(Taverna.posterior.(pair{1}).a, Taverna.posterior.(pair{1}).b, p_Taverna, beta, dp_Taverna, alpha);
+    [Planert_beta_pdf.(pair{1}), Planert_MAP.(pair{1}), Planert_beta_CI.(pair{1})] = TransformPosterior(Planert.posterior.(pair{1}).a, Planert.posterior.(pair{1}).b, p_Planert, beta, dp_Planert, alpha);
 end
 
 %% figures
@@ -63,15 +56,15 @@ end
 % because the derivative is not defined for the very last value of beta, we
 % remove it from the x-axis
 
-beta = beta(1:end-1);
+x_beta = beta(1:end-1);
 
 for pair = MSN_pairs
     
     figure()
     hold on
-    Curve_Taverna = plot(beta, Taverna_beta_pdf.(pair{1}), 'Linewidth', 2);
+    Curve_Taverna = plot(x_beta, Taverna_beta_pdf.(pair{1}), 'Linewidth', 2);
     CI_Taverna_curve = line(Taverna_beta_CI.(pair{1}), [-0.5 -0.5], 'LineWidth',2, 'HandleVisibility', 'off');
-    Curve_Planert = plot(beta, Planert_beta_pdf.(pair{1}), 'Linewidth', 2);
+    Curve_Planert = plot(x_beta, Planert_beta_pdf.(pair{1}), 'Linewidth', 2);
     CI_Planert_curve = line(Planert_beta_CI.(pair{1}), [-1 -1], 'LineWidth',2, 'HandleVisibility', 'off');
     legend('Taverna', 'Planert')
     axis square
