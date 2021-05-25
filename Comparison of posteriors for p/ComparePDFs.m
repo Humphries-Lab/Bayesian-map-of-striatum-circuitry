@@ -31,7 +31,7 @@ Planert = load('../Posteriors for p/Planert posterior with literature prior');
 
 %% within comparisons
 
-pairs = {'d2_d1', 'd2_d2'};
+pairs = {'d1_dx', 'd2_dx'};
 
 WithinDeltaFigures(Taverna, pairs, cm)
 WithinDeltaFigures(Planert, pairs, cm)
@@ -44,6 +44,6 @@ WithinDeltaFigures(Planert, pairs, cm)
 
 %% between comparisons
 
-pairs = {'d1_dx', 'd2_dx'};
-
-BetweenDeltaFigures(Taverna, Planert, pairs, cm([2,4],:))
+% pairs = {'d1_dx', 'd2_dx'};
+% 
+% BetweenDeltaFigures(Taverna, Planert, pairs, cm([2,4],:))

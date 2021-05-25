@@ -11,3 +11,9 @@ for k = -1 : step : 1
     P_delta(i) = integral(@(x) fun(x, k), max(0, -k), min(1,1-k));
     i = i + 1;
 end
+
+index_zero = length(-1 : step : 0);
+X = -1 : step : 0;
+p_less_than_zero = trapz(X, P_delta(1 : index_zero));
+p_more_than_zero = 1 - trapz(X, P_delta(1 : index_zero));
+p_more_extreme = min(p_less_than_zero, p_more_than_zero)

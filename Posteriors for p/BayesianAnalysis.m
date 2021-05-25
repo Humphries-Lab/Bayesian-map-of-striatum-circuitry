@@ -9,7 +9,7 @@ close all
 
 %% select dataset: Taverna, Planert, Krajeski, Cepeda, Combined etc.
 
-source = 'Planert';
+source = 'Taverna';
 data = load([source ' data']);
 
 % folder_name = source;
