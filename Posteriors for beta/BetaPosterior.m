@@ -28,8 +28,8 @@ alpha = 0.05;
 %% either calculate the reparameterisation or load from previous save as this calculation is relatively long
 
 min_beta = 0.001;
-max_beta = 0.5;
-beta_step = 0.0001;
+max_beta = 0.501;
+beta_step = 0.001;
 beta = min_beta : beta_step : max_beta;
 
 p_Taverna = Convert_beta_to_p(beta, R_Taverna, sampling_method);
@@ -50,6 +50,8 @@ for pair = MSN_pairs
     [Taverna_beta_pdf.(pair{1}), Taverna_MAP.(pair{1}), Taverna_beta_CI.(pair{1})] = TransformPosterior(Taverna.posterior.(pair{1}).a, Taverna.posterior.(pair{1}).b, p_Taverna, beta, dp_Taverna, alpha);
     [Planert_beta_pdf.(pair{1}), Planert_MAP.(pair{1}), Planert_beta_CI.(pair{1})] = TransformPosterior(Planert.posterior.(pair{1}).a, Planert.posterior.(pair{1}).b, p_Planert, beta, dp_Planert, alpha);
 end
+
+save('beta pdfs', 'Taverna_beta_pdf', 'Planert_beta_pdf', 'beta')
 
 %% figures
 
