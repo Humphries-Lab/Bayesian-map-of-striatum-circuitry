@@ -13,7 +13,7 @@ close gcf
 %% select datasets and prior and load corresponding posterior distribution
 
 prior = 'literature';
-sampling_method = 'Equiprobable'; % or 'Nearest-Neighbour'
+sampling_method = 'DistanceSquared'; % or 'Nearest-Neighbour'
 
 Taverna = load(['../Posteriors for p/Taverna posterior with ' prior ' prior']);
 Planert = load(['../Posteriors for p/Planert posterior with ' prior ' prior']);
@@ -73,14 +73,14 @@ for pair = MSN_pairs
     
     if strcmp(pair{1}(2), '1') % ie if the presynaptic neuron is a D1 neuron
         xlim([0 0.3])
-        ylim([-3 50])
+        %ylim([-3 50])
         Curve_Taverna.Color = cm(1,:);
         CI_Taverna_Curve.Color = cm(1,:);
         Curve_Planert.Color = cm(2,:);
         CI_Planert_Curve.Color = cm(2,:);
     else % ie if the presynaptic neuron is a D2 neuron instead
         xlim([0 0.15])
-        ylim([-5 90])
+        %ylim([-5 90])
         Curve_Taverna.Color = cm(3,:);
         CI_Taverna_Curve.Color = cm(3,:);
         Curve_Planert.Color = cm(4,:);
@@ -90,15 +90,17 @@ for pair = MSN_pairs
     saveas(gcf, ['beta posterior ' pair{1}], 'svg')
     
     x = 0 : 1 : 120;
-    y1 = exp(-Taverna_MAP.(pair{1}) * x);
-    y2 = exp(-Planert_MAP.(pair{1}) * x);
+    y1 = exp(-Taverna_MAP.(pair{1}) * x.^2);
+    y2 = exp(-Planert_MAP.(pair{1}) * x.^2);
+    yDamodaran = exp(-x.^2 / 95);
     
     figure()
     hold on
     Taverna_exp = plot(x, y1, 'Color', cm(2,:), 'LineWidth', 1);
     Planert_exp = plot(x, y2, 'Color', cm(2,:), 'LineWidth', 1);
+    Damodaran_exp = plot(x, yDamodaran, 'k', 'LineWidth', 1)
     axis square
-    legend('Taverna', 'Planert')
+    legend('Taverna', 'Planert', 'Damodaran')
     %xticks([0 : 1 : 120])
     if strcmp(pair{1}(2), '1') % ie if the presynaptic neuron is a D1 neuron
         Taverna_exp.Color = cm(1,:);
