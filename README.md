@@ -1,4 +1,9 @@
-# Bayesian-map-of-striatum-circuitry
+# Bayesian mapping of neural connectivity
+
+MATLAB toolbox to compute the connection probabilities between neurons from patch-clamp data
+Paper: https://doi.org/10.1523/JNEUROSCI.1487-21.2021
+
+The tools are here applied to patch-clamp data on the connections between neuron types in the striatum.
  
 This project is organised in three different folders which correspond to 1) calculating probability density functions for the probabilities of connection between neurons given data from pair recordings, 2) comparing such posterior distributions and 3) transforming them into posteriors for a decay rate of probability of connection given distance
 
